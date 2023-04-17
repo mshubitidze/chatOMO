@@ -22,11 +22,11 @@ const Page: FC<PageProps> = ({}) => {
   }
   return (
     <>
-      <div className="flex justify-center items-center py-12 px-4 min-h-full sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center space-y-8 w-full max-w-md">
-          <div className="flex flex-col gap-8 items-center">
+      <div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="flex w-full max-w-md flex-col items-center space-y-8">
+          <div className="flex flex-col items-center gap-8">
             logo
-            <h2 className="mt-6 text-3xl font-bold tracking-tight text-center text-gray-900">
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               Sign in to your account.
             </h2>
           </div>
@@ -38,7 +38,7 @@ const Page: FC<PageProps> = ({}) => {
           >
             {isLoading ? null : (
               <svg
-                className="mr-2 w-4 h-4"
+                className="mr-2 h-4 w-4"
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"

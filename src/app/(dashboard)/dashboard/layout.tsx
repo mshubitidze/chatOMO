@@ -45,18 +45,18 @@ const Layout = async ({ children }: LayoutProps) => {
   ).length;
 
   return (
-    <div className="flex w-full h-screen">
-      <div className="flex overflow-y-auto flex-col gap-y-5 px-6 w-full max-w-xs h-full bg-white border-r grow border-r-gray-200">
-        <Link href="/dashboard" className="flex items-center h-16 shrink-0">
-          <Icons.Logo className="w-auto h-8 text-indigo-600" />
+    <div className="flex h-screen w-full">
+      <div className="flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-r-gray-200 bg-white px-6">
+        <Link href="/dashboard" className="flex h-16 shrink-0 items-center">
+          <Icons.Logo className="h-8 w-auto text-indigo-600" />
         </Link>
         {friends.length > 0 ? (
           <div className="text-xs font-semibold leading-6 text-gray-400">
             Your chats
           </div>
         ) : null}
-        <nav className="flex flex-col flex-1">
-          <ul role="list" className="flex flex-col flex-1 gap-y-7">
+        <nav className="flex flex-1 flex-col">
+          <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <SidebarChatList sessionId={session.user.id} friends={friends} />
             <li>
               <div className="text-xs font-semibold leading-6 text-gray-600">
@@ -69,10 +69,10 @@ const Layout = async ({ children }: LayoutProps) => {
                     <li key={option.id}>
                       <Link
                         href={option.href}
-                        className="flex gap-3 p-2 text-sm font-semibold leading-6 text-gray-700 rounded-md hover:text-indigo-600 hover:bg-gray-50 group"
+                        className="group flex gap-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                       >
-                        <span className="flex justify-center items-center w-6 h-6 text-gray-400 bg-white rounded-lg border border-gray-200 group-hover:text-indigo-600 group-hover:border-indigo-600 shrink-0 text-[0.625rem] font-md">
-                          <Icon className="w-4 h-4" />
+                        <span className="font-md flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600">
+                          <Icon className="h-4 w-4" />
                         </span>
                         <span className="truncate">{option.name}</span>
                       </Link>
@@ -87,9 +87,9 @@ const Layout = async ({ children }: LayoutProps) => {
                 </li>
               </ul>
             </li>
-            <li className="flex items-center -mx-6 mt-auto">
-              <div className="flex flex-1 gap-x-4 items-center py-3 px-6 text-sm font-semibold leading-6 text-gray-900">
-                <div className="relative w-8 h-8 bg-gray-50">
+            <li className="-mx-6 mt-auto flex items-center">
+              <div className="flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
+                <div className="relative h-8 w-8 bg-gray-50">
                   <Image
                     fill
                     referrerPolicy="no-referrer"
@@ -106,7 +106,7 @@ const Layout = async ({ children }: LayoutProps) => {
                   </span>
                 </div>
               </div>
-              <SignOutButton className="h-full aspect-square" />
+              <SignOutButton className="aspect-square h-full" />
             </li>
           </ul>
         </nav>
