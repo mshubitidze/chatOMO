@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
-      const dbUser = JSON.parse(dbUserResult)
+      const dbUser = JSON.parse(dbUserResult);
 
       return {
         id: dbUser.id,
