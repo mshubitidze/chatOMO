@@ -9,7 +9,7 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       width="100%"
       viewBox="0 0 690 641"
-      enable-background="new 0 0 690 641"
+      enableBackground="new 0 0 690 641"
     >
       <path
         fill="#000000"
