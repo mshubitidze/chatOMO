@@ -1,7 +1,12 @@
 import { LucideProps, UserPlus } from "lucide-react";
 
 export const Icons = {
-  Logo: (props: LucideProps) => (
+  Logo: () => (
+    <p className="rounded-lg border-2 border-indigo-600 bg-yellow-500 p-1 text-2xl font-bold text-indigo-600">
+      chatPISS
+    </p>
+  ),
+  Logo1: (props: LucideProps) => (
     <svg {...props} viewBox="0 0 2000 2000">
       <path
         fill="currentColor"
