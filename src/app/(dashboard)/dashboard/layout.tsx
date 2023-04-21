@@ -17,7 +17,6 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-// Done after the video and optional: add page metadata
 export const metadata = {
   title: "chatOMO",
   description: "Your dashboard",

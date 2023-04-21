@@ -36,7 +36,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
   }, [pathname]);
 
   return (
-    <div className="fixed z-50 inset-x-0 top-0 border-b border-zinc-200 bg-zinc-50 px-4 py-2">
+    <div className="fixed inset-x-0 top-0 border-b border-zinc-200 bg-zinc-50 px-4 py-2">
       <div className="flex w-full items-center justify-between">
         <Link
           href="/dashboard"
@@ -45,7 +45,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
           <Icons.Omo className="h-6 w-auto text-indigo-600" />
         </Link>
         <Button onClick={() => setOpen(true)} className="gap-4">
-          Menu <Menu className="h-6 w-6" />
+          <Menu className="h-6 w-6" />
         </Button>
       </div>
       <Transition.Root show={open} as={Fragment}>

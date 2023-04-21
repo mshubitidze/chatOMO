@@ -48,7 +48,6 @@ export async function POST(req: Request) {
     const friend = JSON.parse(friendRaw) as User;
 
     // notify added user
-
     await Promise.all([
       pusherServer.trigger(
         toPusherKey(`user:${idToAdd}:friends`),
@@ -68,7 +67,6 @@ export async function POST(req: Request) {
     return new Response("OK");
   } catch (error) {
     console.log(error);
-
     if (error instanceof z.ZodError) {
       return new Response("Invalid request payload", { status: 422 });
     }
