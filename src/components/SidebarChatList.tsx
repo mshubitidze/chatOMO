@@ -28,7 +28,6 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
     pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
 
     const newFriendHandler = (newFriend: User) => {
-      console.log("received new user", newFriend);
       setActiveChats((prev) => [...prev, newFriend]);
     };
 
@@ -54,6 +53,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
       setUnseenMessages((prev) => [...prev, message]);
     };
 
+    // BUG: message toast is being doubled up even though new_message is being unbinded cleaned up
     pusherClient.bind("new_message", chatHandler);
     pusherClient.bind("new_friend", newFriendHandler);
 
