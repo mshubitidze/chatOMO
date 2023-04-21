@@ -44,8 +44,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={`Message ${chatPartner.name}`}
-          className="block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:leading-6 disabled:text-gray-400"
-          disabled={isLoading}
+          className="block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:leading-6"
         />
         <div
           onClick={() => textareaRef.current?.focus()}
@@ -58,7 +57,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
         </div>
         <div className="absolute bottom-0 right-0 flex justify-between py-2 pl-3 pr-2">
           <div className="flex-shrink-0">
-            <Button disabled={!input.length} onClick={sendMessage} type="submit" isLoading={isLoading}>
+            <Button onClick={sendMessage} type="submit" isLoading={isLoading}>
               Post
             </Button>
           </div>
