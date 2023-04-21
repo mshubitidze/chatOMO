@@ -1,5 +1,5 @@
-import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
 import { NextAuthOptions } from "next-auth";
+import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
 import { db } from "./db";
 import GoogleProvider from "next-auth/providers/google";
 import { fetchRedis } from "@/helpers/redis";
@@ -16,10 +16,7 @@ function getGoogleCredentials() {
     throw new Error("Missing GOOGLE_CLIENT_SECRET");
   }
 
-  return {
-    clientId,
-    clientSecret,
-  };
+  return { clientId, clientSecret };
 }
 
 export const authOptions: NextAuthOptions = {
@@ -27,6 +24,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+
   pages: {
     signIn: "/login",
   },
@@ -43,11 +41,14 @@ export const authOptions: NextAuthOptions = {
         | null;
 
       if (!dbUserResult) {
-        token.id = user.id;
+        if (user) {
+          token.id = user!.id;
+        }
+
         return token;
       }
 
-      const dbUser = JSON.parse(dbUserResult);
+      const dbUser = JSON.parse(dbUserResult) as User;
 
       return {
         id: dbUser.id,

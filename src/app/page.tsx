@@ -1,5 +1,7 @@
-export default async function Home() {
-  return (
-    <div className="text-4xl text-red-500">You will never see this kek</div>
-  );
+"use client";
+
+import { signOut } from "next-auth/react";
+
+export default function Home() {
+  return <button onClick={() => signOut()}>Sign out</button>;
 }

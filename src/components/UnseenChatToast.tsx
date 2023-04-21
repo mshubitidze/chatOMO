@@ -14,8 +14,8 @@ interface UnseenChatToastProps {
 
 const UnseenChatToast: FC<UnseenChatToastProps> = ({
   t,
-  sessionId,
   senderId,
+  sessionId,
   senderImg,
   senderName,
   senderMessage,
@@ -24,10 +24,7 @@ const UnseenChatToast: FC<UnseenChatToastProps> = ({
     <div
       className={cn(
         "pointer-events-auto flex w-full max-w-md rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5",
-        {
-          "animate-enter": t.visible,
-          "animate-leave": !t.visible,
-        }
+        { "animate-enter": t.visible, "animate-leave": !t.visible }
       )}
     >
       <a
@@ -36,7 +33,7 @@ const UnseenChatToast: FC<UnseenChatToastProps> = ({
         className="w-0 flex-1 p-4"
       >
         <div className="flex items-start">
-          <div className="flex-shink-0 pt-0.5">
+          <div className="flex-shrink-0 pt-0.5">
             <div className="relative h-10 w-10">
               <Image
                 fill
@@ -47,17 +44,21 @@ const UnseenChatToast: FC<UnseenChatToastProps> = ({
               />
             </div>
           </div>
+
           <div className="ml-3 flex-1">
             <p className="text-sm font-medium text-gray-900">{senderName}</p>
             <p className="mt-1 text-sm text-gray-500">{senderMessage}</p>
           </div>
         </div>
       </a>
+
       <div className="flex border-l border-gray-200">
         <button
           onClick={() => toast.dismiss(t.id)}
           className="flex w-full items-center justify-center rounded-none rounded-r-lg border border-transparent p-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >Close</button>
+        >
+          Close
+        </button>
       </div>
     </div>
   );

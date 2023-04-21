@@ -1,21 +1,27 @@
-import FriendRequestsSidebarOptions from "@/components/FriendRequestsSidebarOption";
-import { type Icon, Icons } from "@/components/Icons";
-import MobileChatLayout from "@/components/MobileChatLayout";
-import SidebarChatList from "@/components/SidebarChatList";
+import { Icons } from "@/components/Icons";
 import SignOutButton from "@/components/SignOutButton";
-import { getFriendsByUserId } from "@/helpers/get-friends-by-user-id";
-import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
-import { SidebarOption } from "@/types/typings";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
+import FriendRequestsSidebarOptions from "@/components/FriendRequestsSidebarOption";
+import { fetchRedis } from "@/helpers/redis";
+import { getFriendsByUserId } from "@/helpers/get-friends-by-user-id";
+import SidebarChatList from "@/components/SidebarChatList";
+import MobileChatLayout from "@/components/MobileChatLayout";
+import { SidebarOption } from "@/types/typings";
 
 interface LayoutProps {
   children: ReactNode;
 }
+
+// Done after the video and optional: add page metadata
+export const metadata = {
+  title: "chatOMO",
+  description: "Your dashboard",
+};
 
 const sidebarOptions: SidebarOption[] = [
   {
@@ -49,9 +55,9 @@ const Layout = async ({ children }: LayoutProps) => {
           unseenRequestCount={unseenRequestCount}
         />
       </div>
-      <div className="hidden h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-r-gray-200 bg-white px-6 md:flex">
+      <div className="hidden h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 md:flex">
         <Link href="/dashboard" className="flex h-16 shrink-0 items-center">
-          <Icons.Omo className="h-12 w-auto text-indigo-600" />
+          <Icons.Logo className="h-8 w-auto text-indigo-600" />
         </Link>
         {friends.length > 0 ? (
           <div className="text-xs font-semibold leading-6 text-gray-400">
@@ -60,9 +66,11 @@ const Layout = async ({ children }: LayoutProps) => {
         ) : null}
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <SidebarChatList sessionId={session.user.id} friends={friends} />
             <li>
-              <div className="text-xs font-semibold leading-6 text-gray-600">
+              <SidebarChatList sessionId={session.user.id} friends={friends} />
+            </li>
+            <li>
+              <div className="text-xs font-semibold leading-6 text-gray-400">
                 Overview
               </div>
               <ul role="list" className="-mx-2 mt-2 space-y-1">
@@ -74,7 +82,7 @@ const Layout = async ({ children }: LayoutProps) => {
                         href={option.href}
                         className="group flex gap-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                       >
-                        <span className="font-md flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] font-medium text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600">
                           <Icon className="h-4 w-4" />
                         </span>
                         <span className="truncate">{option.name}</span>
@@ -101,7 +109,8 @@ const Layout = async ({ children }: LayoutProps) => {
                     alt="Your profile picture"
                   />
                 </div>
-                <span className="sr-only">Your Profile</span>
+
+                <span className="sr-only">Your profile</span>
                 <div className="flex flex-col">
                   <span aria-hidden="true">{session.user.name}</span>
                   <span className="text-xs text-zinc-400" aria-hidden="true">

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "chatOMO",
-  description: "Chat with OMO",
+  description: "Welcome to chatOMO",
 };
 
 export default function RootLayout({

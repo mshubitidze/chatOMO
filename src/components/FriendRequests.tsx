@@ -3,9 +3,9 @@
 import { pusherClient } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
 import axios from "axios";
-import { CheckIcon, UserPlus, X } from "lucide-react";
+import { Check, UserPlus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 
 interface FriendRequestsProps {
   incomingFriendRequests: IncomingFriendRequest[];
@@ -25,18 +25,14 @@ const FriendRequests: FC<FriendRequestsProps> = ({
     pusherClient.subscribe(
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
+    console.log("listening to ", `user:${sessionId}:incoming_friend_requests`);
 
     const friendRequestHandler = ({
       senderId,
       senderEmail,
     }: IncomingFriendRequest) => {
-      setFriendRequests((prev) => [
-        ...prev,
-        {
-          senderId,
-          senderEmail,
-        },
-      ]);
+      console.log("function got called");
+      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
     };
 
     pusherClient.bind("incoming_friend_requests", friendRequestHandler);
@@ -50,9 +46,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
   }, [sessionId]);
 
   const acceptFriend = async (senderId: string) => {
-    await axios.post("/api/friends/accept", {
-      id: senderId,
-    });
+    await axios.post("/api/friends/accept", { id: senderId });
 
     setFriendRequests((prev) =>
       prev.filter((request) => request.senderId !== senderId)
@@ -62,9 +56,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
   };
 
   const denyFriend = async (senderId: string) => {
-    await axios.post("/api/friends/deny", {
-      id: senderId,
-    });
+    await axios.post("/api/friends/deny", { id: senderId });
 
     setFriendRequests((prev) =>
       prev.filter((request) => request.senderId !== senderId)
@@ -83,16 +75,17 @@ const FriendRequests: FC<FriendRequestsProps> = ({
             <UserPlus className="text-black" />
             <p className="text-lg font-medium">{request.senderEmail}</p>
             <button
+              onClick={() => acceptFriend(request.senderId)}
               aria-label="accept friend"
               className="grid h-8 w-8 place-items-center rounded-full bg-indigo-600 transition hover:bg-indigo-700 hover:shadow-md"
-              onClick={() => acceptFriend(request.senderId)}
             >
-              <CheckIcon className="h-3/4 w-3/4 font-semibold text-white" />
+              <Check className="h-3/4 w-3/4 font-semibold text-white" />
             </button>
+
             <button
+              onClick={() => denyFriend(request.senderId)}
               aria-label="deny friend"
               className="grid h-8 w-8 place-items-center rounded-full bg-red-600 transition hover:bg-red-700 hover:shadow-md"
-              onClick={() => denyFriend(request.senderId)}
             >
               <X className="h-3/4 w-3/4 font-semibold text-white" />
             </button>

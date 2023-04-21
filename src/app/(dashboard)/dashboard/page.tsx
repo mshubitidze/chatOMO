@@ -2,29 +2,28 @@ import { getFriendsByUserId } from "@/helpers/get-friends-by-user-id";
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
 import { chatHrefConstructor } from "@/lib/utils";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-const Page = async () => {
+const Page = async ({}) => {
   const session = await getServerSession(authOptions);
-
   if (!session) notFound();
 
   const friends = await getFriendsByUserId(session.user.id);
 
   const friendsWithLastMessage = await Promise.all(
     friends.map(async (friend) => {
-      const [rawLastMessage] = (await fetchRedis(
+      const [lastMessageRaw] = (await fetchRedis(
         "zrange",
         `chat:${chatHrefConstructor(session.user.id, friend.id)}:messages`,
         -1,
         -1
       )) as string[];
 
-      const lastMessage = JSON.parse(rawLastMessage) as Message;
+      const lastMessage = JSON.parse(lastMessageRaw) as Message;
 
       return {
         ...friend,
@@ -45,8 +44,9 @@ const Page = async () => {
             className="relative rounded-md border border-zinc-200 bg-zinc-50 p-3"
           >
             <div className="absolute inset-y-0 right-4 flex items-center">
-              <ChevronRightIcon className="h-7 w-7 text-zinc-400" />
+              <ChevronRight className="h-7 w-7 text-zinc-400" />
             </div>
+
             <Link
               href={`/dashboard/chat/${chatHrefConstructor(
                 session.user.id,
@@ -65,6 +65,7 @@ const Page = async () => {
                   />
                 </div>
               </div>
+
               <div>
                 <h4 className="text-lg font-semibold">{friend.name}</h4>
                 <p className="mt-1 max-w-md">

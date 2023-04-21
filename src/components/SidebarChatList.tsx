@@ -2,13 +2,12 @@
 
 import { pusherClient } from "@/lib/pusher";
 import { chatHrefConstructor, toPusherKey } from "@/lib/utils";
-import { Message } from "@/lib/validations/message";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import UnseenChatToast from "./UnseenChatToast";
 
-interface SidebarChatList {
+interface SidebarChatListProps {
   friends: User[];
   sessionId: string;
 }
@@ -18,25 +17,18 @@ interface ExtendedMessage extends Message {
   senderName: string;
 }
 
-const SidebarChatList: FC<SidebarChatList> = ({ friends, sessionId }) => {
+const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [unseenMessages, setUnseenMessages] = useState<Message[]>([]);
   const [activeChats, setActiveChats] = useState<User[]>(friends);
 
   useEffect(() => {
-    if (pathname?.includes("chat")) {
-      setUnseenMessages((prev) => {
-        return prev.filter((msg) => !pathname.includes(msg.senderId));
-      });
-    }
-  }, [pathname]);
-
-  useEffect(() => {
     pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`));
     pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
 
     const newFriendHandler = (newFriend: User) => {
+      console.log("received new user", newFriend);
       setActiveChats((prev) => [...prev, newFriend]);
     };
 
@@ -47,16 +39,15 @@ const SidebarChatList: FC<SidebarChatList> = ({ friends, sessionId }) => {
 
       if (!shouldNotify) return;
 
-      // should notify
+      // should be notified
       toast.custom((t) => (
-        // custom component
         <UnseenChatToast
           t={t}
           sessionId={sessionId}
           senderId={message.senderId}
           senderImg={message.senderImg}
-          senderName={message.senderName}
           senderMessage={message.text}
+          senderName={message.senderName}
         />
       ));
 
@@ -73,7 +64,15 @@ const SidebarChatList: FC<SidebarChatList> = ({ friends, sessionId }) => {
       pusherClient.unbind("new_message", chatHandler);
       pusherClient.unbind("new_friend", newFriendHandler);
     };
-  }, [pathname, router, sessionId]);
+  }, [pathname, sessionId, router]);
+
+  useEffect(() => {
+    if (pathname?.includes("chat")) {
+      setUnseenMessages((prev) => {
+        return prev.filter((msg) => !pathname.includes(msg.senderId));
+      });
+    }
+  }, [pathname]);
 
   return (
     <ul role="list" className="-mx-2 max-h-[25rem] space-y-1 overflow-y-auto">
@@ -81,6 +80,7 @@ const SidebarChatList: FC<SidebarChatList> = ({ friends, sessionId }) => {
         const unseenMessagesCount = unseenMessages.filter((unseenMsg) => {
           return unseenMsg.senderId === friend.id;
         }).length;
+
         return (
           <li key={friend.id}>
             <a

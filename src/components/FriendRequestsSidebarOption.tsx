@@ -6,12 +6,12 @@ import { User } from "lucide-react";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 
-interface FriendRequestsSidebarOptionsProps {
+interface FriendRequestSidebarOptionsProps {
   sessionId: string;
   initialUnseenRequestCount: number;
 }
 
-const FriendRequestsSidebarOptions: FC<FriendRequestsSidebarOptionsProps> = ({
+const FriendRequestSidebarOptions: FC<FriendRequestSidebarOptionsProps> = ({
   sessionId,
   initialUnseenRequestCount,
 }) => {
@@ -23,7 +23,6 @@ const FriendRequestsSidebarOptions: FC<FriendRequestsSidebarOptionsProps> = ({
     pusherClient.subscribe(
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
-
     pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
 
     const friendRequestHandler = () => {
@@ -41,8 +40,10 @@ const FriendRequestsSidebarOptions: FC<FriendRequestsSidebarOptionsProps> = ({
       pusherClient.unsubscribe(
         toPusherKey(`user:${sessionId}:incoming_friend_requests`)
       );
-      pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
+      pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`));
+
       pusherClient.unbind("new_friend", addedFriendHandler);
+      pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
     };
   }, [sessionId]);
 
@@ -55,6 +56,7 @@ const FriendRequestsSidebarOptions: FC<FriendRequestsSidebarOptionsProps> = ({
         <User className="h-4 w-4" />
       </div>
       <p className="truncate">Friend requests</p>
+
       {unseenRequestCount > 0 ? (
         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-xs text-white">
           {unseenRequestCount}
@@ -64,4 +66,4 @@ const FriendRequestsSidebarOptions: FC<FriendRequestsSidebarOptionsProps> = ({
   );
 };
 
-export default FriendRequestsSidebarOptions;
+export default FriendRequestSidebarOptions;

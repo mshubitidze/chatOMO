@@ -18,16 +18,11 @@ interface MessagesProps {
 const Messages: FC<MessagesProps> = ({
   initialMessages,
   sessionId,
-  sessionImg,
-  chatPartner,
   chatId,
+  chatPartner,
+  sessionImg,
 }) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const scrollDownRef = useRef<HTMLDivElement | null>(null);
-
-  const formatTimestamp = (timestamp: number) => {
-    return format(timestamp, "HH:mm");
-  };
 
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
@@ -44,6 +39,12 @@ const Messages: FC<MessagesProps> = ({
     };
   }, [chatId]);
 
+  const scrollDownRef = useRef<HTMLDivElement | null>(null);
+
+  const formatTimestamp = (timestamp: number) => {
+    return format(timestamp, "HH:mm");
+  };
+
   return (
     <div
       id="messages"
@@ -59,8 +60,8 @@ const Messages: FC<MessagesProps> = ({
 
         return (
           <div
-            key={`${message.id}-${message.timestamp}`}
             className="chat-message"
+            key={`${message.id}-${message.timestamp}`}
           >
             <div
               className={cn("flex items-end", {
@@ -92,6 +93,7 @@ const Messages: FC<MessagesProps> = ({
                   </span>
                 </span>
               </div>
+
               <div
                 className={cn("relative h-6 w-6", {
                   "order-2": isCurrentUser,

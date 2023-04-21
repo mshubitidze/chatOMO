@@ -1,18 +1,18 @@
 "use client";
 
-import { FC, Fragment, useEffect, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import Link from "next/link";
-import Button, { buttonVariants } from "./ui/Button";
-import { Icons } from "./Icons";
+import { Transition, Dialog } from "@headlessui/react";
 import { Menu, X } from "lucide-react";
-import SignOutButton from "./SignOutButton";
-import SidebarChatList from "./SidebarChatList";
 import Image from "next/image";
-import FriendRequestsSidebarOptions from "./FriendRequestsSidebarOption";
+import Link from "next/link";
+import { FC, Fragment, useEffect, useState } from "react";
+import { Icons } from "./Icons";
+import SignOutButton from "./SignOutButton";
+import Button, { buttonVariants } from "./ui/Button";
+import SidebarChatList from "./SidebarChatList";
 import { Session } from "next-auth";
 import { SidebarOption } from "@/types/typings";
 import { usePathname } from "next/navigation";
+import FriendRequestSidebarOptions from "./FriendRequestsSidebarOption";
 
 interface MobileChatLayoutProps {
   friends: User[];
@@ -32,8 +32,8 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
   const pathname = usePathname();
 
   useEffect(() => {
-    setOpen(false)
-  }, [pathname])
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <div className="fixed inset-x-0 top-0 border-b border-zinc-200 bg-zinc-50 px-4 py-2">
@@ -42,7 +42,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
           href="/dashboard"
           className={buttonVariants({ variant: "ghost" })}
         >
-          <Icons.Omo className="h-6 w-auto text-indigo-600" />
+          <Icons.Logo className="h-6 w-auto text-indigo-600" />
         </Link>
         <Button onClick={() => setOpen(true)} className="gap-4">
           Menu <Menu className="h-6 w-6" />
@@ -127,8 +127,9 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                                     </li>
                                   );
                                 })}
+
                                 <li>
-                                  <FriendRequestsSidebarOptions
+                                  <FriendRequestSidebarOptions
                                     initialUnseenRequestCount={
                                       unseenRequestCount
                                     }

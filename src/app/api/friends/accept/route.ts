@@ -47,8 +47,9 @@ export async function POST(req: Request) {
     const user = JSON.parse(userRaw) as User;
     const friend = JSON.parse(friendRaw) as User;
 
+    // notify added user
+
     await Promise.all([
-    // notify added user and client
       pusherServer.trigger(
         toPusherKey(`user:${idToAdd}:friends`),
         "new_friend",
@@ -59,7 +60,6 @@ export async function POST(req: Request) {
         "new_friend",
         friend
       ),
-      // add to friends
       db.sadd(`user:${session.user.id}:friends`, idToAdd),
       db.sadd(`user:${idToAdd}:friends`, session.user.id),
       db.srem(`user:${session.user.id}:incoming_friend_requests`, idToAdd),
@@ -67,10 +67,10 @@ export async function POST(req: Request) {
 
     return new Response("OK");
   } catch (error) {
+    console.log(error);
+
     if (error instanceof z.ZodError) {
-      return new Response("Invalid request payload", {
-        status: 422,
-      });
+      return new Response("Invalid request payload", { status: 422 });
     }
 
     return new Response("Invalid request", { status: 400 });
