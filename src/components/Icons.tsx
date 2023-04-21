@@ -1,7 +1,7 @@
 import { LucideProps, UserPlus } from "lucide-react";
 
 export const Icons = {
-  Omo: (props: { className: string }) => (
+  Omo: (props: { className?: string }) => (
     <svg
       {...props}
       version="1.1"
