@@ -64,9 +64,9 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
           <div className="flex-shrin-0">
             <Button
               isLoading={isLoading}
-              disabled={input === ""}
               onClick={sendMessage}
               type="submit"
+              input={input}
             >
               Post
             </Button>
